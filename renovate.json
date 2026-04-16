@@ -1,0 +1,17 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["github>AlaudaDevops/renovate-config:base"],
+  "baseBranches": ["/^alauda-v.*/"],
+  "postUpdateOptions": ["gomodTidy"],
+  "assignees": ["chengjingtao"],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^\\.dagger\\/.*\\.go$/"],
+      "matchStrings": [
+        "\\/\\/\\s*renovate:\\s*datasource=(?<datasource>[a-zA-Z0-9-._]+?)\\s+depName=(?<depName>[^\\s]+?)(?:\\s+packageName=(?<packageName>[^\\s]+?))?(?:\\s+versioning=(?<versioning>[^\\s]+?))?\\s*\\n[^\"\\n]*\"[^:\"]+:(?<currentValue>[^\"]+)\""
+      ],
+      "description": "Update images in .dagger/*.go annotated with // renovate: ..."
+    }
+  ]
+}

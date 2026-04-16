@@ -107,6 +107,7 @@ func (m *HarborCli) PublishImage(
 			}
 
 			ctr := dag.Container(dagger.ContainerOpts{Platform: dagger.Platform(os + "/" + arch)}).
+				// renovate: datasource=docker depName=alpine
 				From("alpine:latest").
 				WithWorkdir("/").
 				WithFile("/harbor", builder.File("./harbor")).
@@ -130,6 +131,7 @@ func (m *HarborCli) PublishImage(
 			filepath := fmt.Sprintf("bin/harbor-cli_%s_linux_%s", m.AppVersion, arch)
 
 			ctr := dag.Container(dagger.ContainerOpts{Platform: dagger.Platform("linux/" + arch)}).
+				// renovate: datasource=docker depName=alpine
 				From("alpine:latest").
 				WithWorkdir("/").
 				WithFile("/harbor", buildDir.File(filepath)).
