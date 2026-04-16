@@ -1,0 +1,58 @@
+name: Release Alauda
+
+on:
+  push:
+    tags:
+      - "v*-alauda-*"
+  workflow_call:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: alauda-release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Dagger Version
+        id: dagger_version
+        uses: sagikazarmark/dagger-version-action@v0.0.1
+
+      - name: Create Build Dir
+        run: mkdir -p dist
+
+      - name: Build Binaries
+        uses: dagger/dagger-for-github@v7
+        with:
+          version: ${{ steps.dagger_version.outputs.version }}
+          verb: call
+          args: "build --build-dir=./dist export --path=./dist"
+
+      - name: Archive Binaries
+        uses: dagger/dagger-for-github@v7
+        with:
+          version: ${{ steps.dagger_version.outputs.version }}
+          verb: call
+          args: "archive --build-dir=./dist export --path=./dist"
+
+      - name: Create Checksum
+        uses: dagger/dagger-for-github@v7
+        with:
+          version: ${{ steps.dagger_version.outputs.version }}
+          verb: call
+          args: "checksum --build-dir=./dist export --path=./dist"
+
+      - name: Publish Release
+        uses: dagger/dagger-for-github@v7
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          version: ${{ steps.dagger_version.outputs.version }}
+          verb: call
+          args: "publish-release --build-dir=./dist --token=env://GITHUB_TOKEN"
