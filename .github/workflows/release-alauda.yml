@@ -4,14 +4,6 @@ on:
   push:
     tags:
       - "v*-alauda-*"
-  pull_request:
-    branches:
-      - 'alauda-v*'
-    paths:
-      - '.github/workflows/release-alauda.yml'
-      - '.github/workflows/alauda-auto-tag.yml'
-      - '.dagger/**'
-      - 'go.mod'
   workflow_call:
   workflow_dispatch:
 
@@ -56,8 +48,8 @@ jobs:
           verb: call
           args: "nfpm-build --build-dir=./dist export --path=./dist"
 
-      - name: Create empty apk dir
-        run: mkdir -p dist/apk
+      - name: Create empty dirs for skipped steps
+        run: mkdir -p dist/apk dist/sbom
 
       - name: Create Checksum
         uses: dagger/dagger-for-github@v7
