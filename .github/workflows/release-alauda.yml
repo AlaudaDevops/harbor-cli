@@ -48,8 +48,8 @@ jobs:
           verb: call
           args: "nfpm-build --build-dir=./dist export --path=./dist"
 
-      - name: Create empty apk dir
-        run: mkdir -p dist/apk
+      - name: Create empty dirs for skipped steps
+        run: mkdir -p dist/apk dist/sbom
 
       - name: Create Checksum
         uses: dagger/dagger-for-github@v7
