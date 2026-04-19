@@ -4,14 +4,6 @@ on:
   push:
     tags:
       - "v*-alauda-*"
-  pull_request:
-    branches:
-      - 'alauda-v*'
-    paths:
-      - '.github/workflows/release-alauda.yml'
-      - '.github/workflows/alauda-auto-tag.yml'
-      - '.dagger/**'
-      - 'go.mod'
   workflow_call:
   workflow_dispatch:
 
