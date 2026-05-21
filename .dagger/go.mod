@@ -1,6 +1,6 @@
 module dagger/harbor-cli
 
-go 1.26.3
+go 1.26.2
 
 replace go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploggrpc => go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploggrpc v0.14.0
 
